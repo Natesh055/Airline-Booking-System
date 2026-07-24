@@ -16,7 +16,7 @@ public interface CityService {
 
     Page<CityResponse> getAllCities(Pageable pageable);
     Page<CityResponse> searchCities(String keyword, Pageable pageable);
-    Page<CityResponse> searchCitiesByCountryCode(String countryCode, Pageable pageable);
+    Page<CityResponse> getCityByCountryCode(String countryCode, Pageable pageable);
     boolean cityExists(String cityCode);
     boolean validateCityCode(String cityCode);
 

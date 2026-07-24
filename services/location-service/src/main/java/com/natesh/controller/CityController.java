@@ -7,12 +7,13 @@ import com.natesh.service.CityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,52 @@ public class CityController {
     @PostMapping("/create-city")
     public ResponseEntity<?> createCity(@Valid @RequestBody CityRequest cityRequest) throws Exception {
         CityResponse response = cityService.createCity(cityRequest);
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getCityById(@PathVariable Long id) throws Exception {
+        CityResponse cityResponse = cityService.getCityById(id);
+        return new ResponseEntity<>(cityResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/get-all-cities")
+    public ResponseEntity<?> getAllCities(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "20") int size,
+                                          @RequestParam(defaultValue = "name") String sortBy,
+                                          @RequestParam(defaultValue = "asc") String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return new ResponseEntity<>(cityService, HttpStatus.OK);
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<?> updateCityById(@PathVariable Long id, @RequestBody CityRequest request) throws Exception {
+        CityResponse response = cityService.updateCity(id, request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{}id")
+    public ResponseEntity<?> deleteCityById(@PathVariable Long id) throws Exception {
+        cityService.deleteCity(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/search-cities")
+    public ResponseEntity<?> searchAllCities(@RequestParam String keyword,
+                                             @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(cityService.searchCities(keyword, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/countryCode/{countryCode}")
+    public ResponseEntity<?> searchCityByCountryCode(@PathVariable String countryCode,
+                                             @RequestParam(defaultValue = "0") int page,
+                                             @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return new ResponseEntity<>(cityService.getCityByCountryCode(countryCode.toUpperCase(),pageable), HttpStatus.OK);
+    }
+
 }
 
