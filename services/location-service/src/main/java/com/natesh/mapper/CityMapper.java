@@ -38,14 +38,13 @@ public class CityMapper {
             city.setName(req.getName().trim());
 
         if(req.getCityCode()!=null)
-            city.setName(req.getCityCode().toUpperCase().trim());
+            city.setCityCode(req.getCityCode().toUpperCase().trim());
 
         if(req.getCountryCode()!=null)
-            city.setName(req.getCountryCode().toUpperCase().trim());
+            city.setCountryCode(req.getCountryCode().toUpperCase().trim());
 
         if(req.getRegionCode()!=null)
-            city.setName(req.getRegionCode().toUpperCase().trim());
-
+            city.setRegionCode(req.getRegionCode().toUpperCase().trim());
         return city;
     }
 

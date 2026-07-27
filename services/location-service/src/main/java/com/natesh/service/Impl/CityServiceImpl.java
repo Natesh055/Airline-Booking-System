@@ -49,7 +49,7 @@ public class CityServiceImpl implements CityService {
 //            throw new
 //        }
         City updatedCity = cityRepository.save(cityMapper.updateEntity(city, req));
-        return cityMapper.toResponse(updatedCity);
+        return CityMapper.toResponse(updatedCity);
     }
 
     @Override
