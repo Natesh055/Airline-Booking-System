@@ -20,10 +20,10 @@ public class CityServiceImpl implements CityService {
     CityRepository cityRepository;
     @Autowired
     CityMapper cityMapper;
+
     @Override
     public CityResponse createCity(CityRequest cityRequest) throws Exception {
-        if(cityRepository.existsByCityCode(cityRequest.getCityCode()))
-        {
+        if (cityRepository.existsByCityCode(cityRequest.getCityCode())) {
             throw new Exception("City with given code already exists");
         }
         City city = CityMapper.toEntity(cityRequest);
@@ -41,14 +41,14 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityResponse updateCity(Long id,CityRequest req) throws Exception {
+    public CityResponse updateCity(Long id, CityRequest req) throws Exception {
         City city = cityRepository.findById(id).orElseThrow(
                 () -> new Exception("City does not exist with given id")
         );
 //        if(cityRepository.existsByCityCode(req.getCityCode()) == false){
 //            throw new
 //        }
-        City updatedCity = cityRepository.save(cityMapper.updateEntity(city,req));
+        City updatedCity = cityRepository.save(cityMapper.updateEntity(city, req));
         return cityMapper.toResponse(updatedCity);
     }
 
@@ -64,19 +64,19 @@ public class CityServiceImpl implements CityService {
     @Override
     public Page<CityResponse> getAllCities(Pageable pageable) {
         return cityRepository.findAll(pageable)
-                .map(CityMapper :: toResponse);
+                .map(CityMapper::toResponse);
     }
 
     @Override
     public Page<CityResponse> searchCities(String keyword, Pageable pageable) {
         return cityRepository.searchByKeyword(keyword, pageable)
-                .map(CityMapper :: toResponse);
+                .map(CityMapper::toResponse);
     }
 
     @Override
-    public Page<CityResponse> searchCitiesByCountryCode(String countryCode, Pageable pageable) {
-        return cityRepository.findByCountryCodeIgnoreCase(countryCode,pageable)
-                .map(CityMapper :: toResponse);
+    public Page<CityResponse> getCityByCountryCode(String countryCode, Pageable pageable) {
+        return cityRepository.findByCountryCodeIgnoreCase(countryCode, pageable)
+                .map(CityMapper::toResponse);
     }
 
     @Override

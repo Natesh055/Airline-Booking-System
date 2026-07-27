@@ -50,7 +50,7 @@ public class CityController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{}id")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCityById(@PathVariable Long id) throws Exception {
         cityService.deleteCity(id);
         return new ResponseEntity<>(HttpStatus.OK);
