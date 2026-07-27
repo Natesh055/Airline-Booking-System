@@ -32,13 +32,14 @@ public class AirportServiceImpl implements AirportService {
         if (airportRepository.findByIataCode(request.getIataCode()).isPresent()) {
             throw new Exception("Airport with given Iata code already exists");
         }
-        City city = cityRepository.findById(request.getCityID()).orElseThrow(
+        log.info("City ID received: {}", request.getCityId());
+        City city = cityRepository.findById(request.getCityId()).orElseThrow(
                 () -> new Exception("City not found")
         );
-
         Airport airport = AirportMapper.toEntity(request);
+        airport.setCity(city);
         Airport savedAirport = airportRepository.save(airport);
-        return AirportMapper.toResponse(airport);
+        return AirportMapper.toResponse(savedAirport);
     }
 
     @Override
