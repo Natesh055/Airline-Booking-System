@@ -29,47 +29,48 @@ public class CityController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<?> getCityById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> getCityById(@PathVariable("id") Long id) throws Exception {
         CityResponse cityResponse = cityService.getCityById(id);
         return new ResponseEntity<>(cityResponse, HttpStatus.OK);
     }
 
     @GetMapping("/get-all-cities")
-    public ResponseEntity<?> getAllCities(@RequestParam(defaultValue = "0") int page,
-                                          @RequestParam(defaultValue = "20") int size,
-                                          @RequestParam(defaultValue = "name") String sortBy,
-                                          @RequestParam(defaultValue = "asc") String sortDirection) {
+    public ResponseEntity<?> getAllCities(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size,
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "sortDirection", defaultValue = "asc") String sortDirection) {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
-        return new ResponseEntity<>(cityService, HttpStatus.OK);
+        return ResponseEntity.ok(cityService.getAllCities(pageable));
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> updateCityById(@PathVariable Long id, @RequestBody CityRequest request) throws Exception {
+    public ResponseEntity<?> updateCityById(@PathVariable("id") Long id, @RequestBody CityRequest request) throws Exception {
         CityResponse response = cityService.updateCity(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteCityById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> deleteCityById(@PathVariable("id") Long id) throws Exception {
         cityService.deleteCity(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/search-cities")
-    public ResponseEntity<?> searchAllCities(@RequestParam String keyword,
-                                             @RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<?> searchAllCities(@RequestParam(name = "keyword") String keyword,
+                                             @RequestParam(name = "page", defaultValue = "0") int page,
+                                             @RequestParam(name = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(cityService.searchCities(keyword, pageable), HttpStatus.OK);
+        return ResponseEntity.ok(cityService.searchCities(keyword, pageable));
     }
 
     @GetMapping("/search/countryCode/{countryCode}")
     public ResponseEntity<?> searchCityByCountryCode(@PathVariable String countryCode,
-                                             @RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "10") int size) {
+                                                     @RequestParam(name = "page", defaultValue = "0") int page,
+                                                     @RequestParam(name = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return new ResponseEntity<>(cityService.getCityByCountryCode(countryCode.toUpperCase(),pageable), HttpStatus.OK);
+        return new ResponseEntity<>(cityService.getCityByCountryCode(countryCode.toUpperCase(), pageable), HttpStatus.OK);
     }
 
 }
