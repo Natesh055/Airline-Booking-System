@@ -52,8 +52,8 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phone(request.getPhone())
                 .role(request.getRole())
-                .lastLogin(LocalDate.from(LocalDateTime.now()))
-                .createdAt(LocalDate.from(LocalDateTime.now()))
+                .lastLogin(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
                 .build();
 
         User savedUser = userRepository.save(newUser);
@@ -80,7 +80,7 @@ public class AuthServiceImpl implements AuthService {
         if (user == null) {
             throw new Exception("");
         }
-        user.setLastLogin(LocalDate.from(LocalDateTime.now()));
+        user.setLastLogin(LocalDateTime.now());
         userRepository.save(user);
         String jwt = jwtProvider.generateToken(authentication, user.getId());
 

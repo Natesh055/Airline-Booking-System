@@ -24,12 +24,12 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody @Valid UserDTO userDTO) throws Exception {
         AuthResponse authResponse = authService.signup(userDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(authResponse,HttpStatus.OK);
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
         AuthResponse authResponse = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(authResponse,HttpStatus.OK);
     }
 
 }

@@ -1,7 +1,5 @@
 package com.natesh.controller;
 
-import com.natesh.mapper.UserMapper;
-import com.natesh.model.User;
 import com.natesh.payload.DTO.UserDTO;
 import com.natesh.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,18 +21,18 @@ public class UserController {
     public ResponseEntity<?> getUserProfile(
             @RequestHeader("X-User-Email") String email) throws Exception {
         UserDTO user = userService.getUserByEmail(email);
-        return new ResponseEntity<>(user,HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/get-by/{id}")
-    public ResponseEntity<?>getUserByUserId(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<?> getUserByUserId(@PathVariable("id") Long id) throws Exception {
         UserDTO userById = userService.getUserById(id);
-        return new ResponseEntity<>(userById,HttpStatus.OK);
+        return new ResponseEntity<>(userById, HttpStatus.OK);
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<?>getAllUsers(){
+    public ResponseEntity<?> getAllUsers() {
         List<UserDTO> allUsers = userService.getAllUsers();
-        return new ResponseEntity<>(allUsers,HttpStatus.OK);
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 }
