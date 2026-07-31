@@ -53,7 +53,7 @@ public class Airline {
     private Instant createdAt;
 
     @CreatedDate
-    @Column(updatable = false, nullable = false)
+    @Column(nullable = false)
     private Instant updatedAt;
 
     @Embedded

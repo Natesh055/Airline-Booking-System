@@ -42,7 +42,6 @@ public class AirlineController {
         return new ResponseEntity<>(airline, HttpStatus.CREATED);
     }
 
-//    TODO::
 //    @GetMapping("/get-all")
 //    public ResponseEntity<?> getAllAirlines(Pageable pageable) {
 //        airlineService.getAllAirlines(pageable);
