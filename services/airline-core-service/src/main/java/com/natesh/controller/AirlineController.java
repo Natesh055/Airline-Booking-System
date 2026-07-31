@@ -9,14 +9,18 @@ import com.natesh.payload.response.AirlineResponse;
 import com.natesh.payload.response.ApiResponse;
 import com.natesh.service.AirlineService;
 import jakarta.validation.Valid;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/airline")
 public class AirlineController {
@@ -42,11 +46,13 @@ public class AirlineController {
         return new ResponseEntity<>(airline, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/get-all")
-//    public ResponseEntity<?> getAllAirlines(Pageable pageable) {
-//        airlineService.getAllAirlines(pageable);
-//    }
-
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAllAirlines(Pageable pageable) {
+        return new ResponseEntity<>(
+                airlineService.getAllAirlines(pageable),
+                HttpStatus.OK
+        );
+    }
 
     @GetMapping("/get-by/dropdown")
     public ResponseEntity<?> getAirlinesForDropdown(Pageable pageable) {
@@ -65,7 +71,7 @@ public class AirlineController {
     public ResponseEntity<?> deleteMapping(@PathVariable("id") Long id,
                                            @RequestHeader("X-User-Id") Long userId) throws Exception {
         airlineService.deleteAirline(id, userId);
-        ApiResponse response = new ApiResponse("Airline deleted successfully.");
+        ApiResponse response = new ApiResponse("Airline with deleted successfully with id: "+id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

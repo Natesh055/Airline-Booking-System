@@ -14,6 +14,7 @@ public class AirlineMapper {
             return null;
         }
         Airline airline = Airline.builder()
+                .name(request.getName())
                 .iataCode(request.getIataCode())
                 .icaoCode(request.getIcaoCode())
                 .alias(request.getAlias())
