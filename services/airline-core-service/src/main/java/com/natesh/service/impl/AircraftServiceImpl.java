@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,9 @@ public class AircraftServiceImpl implements AircraftService {
         if (aircraft.getSeatingCapacity() < aircraft.getTotalSeats()) {
             throw new Exception("seating capacity can't exceed to total seats ");
         }
+        aircraft.setAirline(airline);
+        aircraft.setCreatedAt(Instant.now());
+        aircraft.setUpdatedAt(Instant.now());
         Aircraft savedAircraft = aircraftRepository.save(aircraft);
         return AircraftMapper.toResponse(savedAircraft);
     }
@@ -60,8 +64,8 @@ public class AircraftServiceImpl implements AircraftService {
         }
 
         if (request.getCode() != null
-                && !aircraft.getCode().equals(request.getCode())
-                && aircraftRepository.existsByCode(aircraft.getCode())) {
+                && !request.getCode().equals(aircraft.getCode())
+                && aircraftRepository.existsByCode(request.getCode())) {
             throw new Exception("Code already exists with another aircraft");
         }
         AircraftMapper.updateEntity(aircraft, request);

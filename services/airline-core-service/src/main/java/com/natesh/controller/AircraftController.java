@@ -1,19 +1,20 @@
 package com.natesh.controller;
 
-import com.natesh.mapper.AircraftMapper;
 import com.natesh.payload.request.AircraftRequest;
 import com.natesh.payload.response.AircraftResponse;
-import com.natesh.repository.AircraftRepository;
 import com.natesh.service.AircraftService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/aircraft")
@@ -38,7 +39,7 @@ public class AircraftController {
     }
 
 
-    @GetMapping("get-all/{userId}")
+    @GetMapping("get-all")
     public ResponseEntity<?> getAllAircrafts(
             @RequestHeader("X-User-Id") Long userId) throws Exception {
         List<AircraftResponse> aircraftResponses = aircraftService.listAlAircraftByOwnerId(userId);
@@ -50,19 +51,16 @@ public class AircraftController {
             @PathVariable("id") Long id,
             @RequestBody AircraftRequest aircraftRequest,
             @RequestHeader("X-User-Id") Long userId) throws Exception {
-        return new ResponseEntity<>(aircraftService.updateAircraft(id, aircraftRequest, userId), HttpStatus.OK );
-
+        AircraftResponse aircraftResponse = aircraftService.updateAircraft(id, aircraftRequest, userId);
+        return new ResponseEntity<>(aircraftResponse, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteById(
             @PathVariable("id") Long id,
             @RequestHeader("X-User-Id") Long userId) throws Exception {
-        aircraftService.deleteAircraft(id,userId);
+        aircraftService.deleteAircraft(id, userId);
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
-
-
 
 }
